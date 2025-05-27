@@ -52,36 +52,6 @@ const CheckoutModal = ({ total, onClose, productCategory }) => {
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
-  const sendWhatsAppInvoice = async () => {
-    const sid = process.env.REACT_APP_TWILIO_SID;
-    const token = process.env.REACT_APP_TWILIO_TOKEN;
-    const from = process.env.REACT_APP_TWILIO_FROM;
-    const to = `whatsapp:${phoneNumber || "+919876543210"}`;
-
-    let message = `🧾 Hello! Your invoice total is ₹${total.toFixed(2)}. Thank you for shopping with us!`;
-
-    if (
-      productCategory?.toLowerCase() === "laptop" ||
-      productCategory?.toLowerCase() === "desktop"
-    ) {
-      const upiLink = `upi://pay?pa=your-merchant-id@okhdfcbank&pn=YourStore&am=${total.toFixed(
-        2
-      )}&cu=INR`;
-      message += `\n\n💳 Pay via UPI: ${upiLink}`;
-    }
-
-    const response = await axios.post(
-      `https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`,
-      new URLSearchParams({ From: from, To: to, Body: message }),
-      { auth: { username: sid, password: token } }
-    );
-
-    if (![200, 201].includes(response.status)) {
-      throw new Error("Failed to send WhatsApp invoice.");
-    }
-    alert("WhatsApp invoice sent successfully!");
-  };
-
   const initiateUPIPayment = () => {
     const upiUrl = `upi://pay?pa=your-merchant-id@okhdfcbank&pn=YourStore&am=${total.toFixed(
       2
