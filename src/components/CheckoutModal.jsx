@@ -48,14 +48,14 @@ const CheckoutModal = ({ total, onClose, productCategory }) => {
   };
 
   const clearCart = () => {
-    localStorage.removeItem('cart');
-    window.dispatchEvent(new Event('cartUpdated'));
+    localStorage.removeItem("cart");
+    window.dispatchEvent(new Event("cartUpdated"));
   };
 
   const sendWhatsAppInvoice = async () => {
-    const sid = "ACe35ae9a39267c3fb0c8221c51805eee7";
-    const token = "b37c3fa8e62c673ca0786b5df62a5b4c";
-    const from = "whatsapp:+14155238886";
+    const sid = process.env.REACT_APP_TWILIO_SID;
+    const token = process.env.REACT_APP_TWILIO_TOKEN;
+    const from = process.env.REACT_APP_TWILIO_FROM;
     const to = `whatsapp:${phoneNumber || "+919876543210"}`;
 
     let message = `🧾 Hello! Your invoice total is ₹${total.toFixed(2)}. Thank you for shopping with us!`;
